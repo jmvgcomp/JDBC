@@ -1,4 +1,4 @@
-package Select.application;
+package BasicJDBC.Select.application;
 
 import db.DB;
 

@@ -1,4 +1,4 @@
-package Insert.application;
+package BasicJDBC.Insert.application;
 
 import db.DB;
 

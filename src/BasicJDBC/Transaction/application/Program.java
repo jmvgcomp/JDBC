@@ -1,8 +1,7 @@
-package Transaction.application;
+package BasicJDBC.Transaction.application;
 
 import db.DB;
 import db.DbExeception;
-import db.DbIntegrityException;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -32,7 +31,6 @@ public class Program {
             try {
                 connection.rollback();
                 throw new DbExeception("Transaction rolled back! Caused by: "+e.getMessage());
-
             } catch (SQLException ex) {
                 throw new DbExeception("Error trying to rollback. Caused by: "+e.getMessage());
 

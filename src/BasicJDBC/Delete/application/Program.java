@@ -1,4 +1,4 @@
-package Delete.application;
+package BasicJDBC.Delete.application;
 
 import db.DB;
 import db.DbIntegrityException;

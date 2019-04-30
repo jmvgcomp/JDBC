@@ -1,4 +1,4 @@
-package Update.application;
+package BasicJDBC.Update.application;
 
 import db.DB;
 
