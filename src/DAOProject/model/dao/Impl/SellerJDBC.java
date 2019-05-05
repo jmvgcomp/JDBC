@@ -9,7 +9,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SellerJDBC implements DAO<Seller> {
     private Connection conn;
@@ -71,6 +74,48 @@ public class SellerJDBC implements DAO<Seller> {
         return null;
     }
 
+    @Override
+    public List<Seller> findByDepartment(Department department){
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try{
+            st = conn.prepareStatement(
+                    "SELECT seller.*,department.Name as DepName "
+                    +"FROM seller INNER JOIN department "
+                    +"ON seller.DepartmentId = department.Id "
+                    +"WHERE DepartmentId = ? "
+                    +"ORDER BY Name");
+
+            st.setInt(1, department.getId());
+            rs = st.executeQuery();
+
+            List<Seller> sellers = new ArrayList<>();
+            Map<Integer, Department> map = new HashMap<>(); //Necessário para não repetição do departamento
+
+            while(rs.next()) {
+
+                Department dep = map.get(rs.getInt("DepartmentId"));
+                if(dep == null) {
+                    dep = instantiateDepartment(rs);
+                    map.put(rs.getInt("DepartmentId"), dep);
+                }
+                Seller seller = instantiateSeller(rs, dep);
+                sellers.add(seller);
+            }
+            return sellers;
+        }catch (SQLException e){
+            throw new DbExeception(e.getMessage());
+        }finally {
+            try {
+                st.close();
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
     private Department instantiateDepartment(ResultSet rs) throws SQLException {
         Department department = new Department();
         department.setId(rs.getInt("DepartmentId"));
@@ -88,4 +133,6 @@ public class SellerJDBC implements DAO<Seller> {
         seller.setDepartment(department);
         return seller;
     }
+
+
 }
