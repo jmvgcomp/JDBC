@@ -24,7 +24,6 @@ public class Program {
         sellerList = sellerDAO.findAll();
         sellerList.forEach(System.out::println);
 
-
         System.out.println("\n===TEST 4: seller insert ===");
         Seller newSeller = new Seller(null, "Greg", "greg@gmail.com", new Date(), 4000.0, department);
         sellerDAO.insert(newSeller);
@@ -35,5 +34,10 @@ public class Program {
         seller = sellerDAO.findById(1);
         seller.setName("Martha Waine");
         sellerDAO.update(seller);
+
+
+        System.out.println("\n===TEST 6: seller delete ===");
+        sellerDAO.deleteById(2);
+        System.out.println("Delete completed.");
     }
 }

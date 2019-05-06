@@ -5,6 +5,7 @@ import DAOProject.model.entities.Department;
 import DAOProject.model.entities.Seller;
 import db.DbExeception;
 
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -91,7 +92,25 @@ public class SellerJDBC implements DAO<Seller> {
 
     @Override
     public void deleteById(Integer id) {
-
+        PreparedStatement st = null;
+        try {
+            st = conn.prepareStatement(
+                    "DELETE FROM seller WHERE Id = ?"
+            );
+            st.setInt(1, id);
+            int rows = st.executeUpdate();
+            if(rows == 0){
+                throw new DbExeception("ID doesn't exists.");
+            }
+        }catch (SQLException e){
+            throw new DbExeception(e.getMessage());
+        }finally {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
